@@ -1,4 +1,4 @@
-
+package src.main;
 public class TestClass {
 
 	@SimpleAnnotation1
@@ -11,7 +11,7 @@ public class TestClass {
 
 	}
 
-	@SimpleAnnotation3(firstName = "Perica", parents = { "Ivica", "Marica" })
+	@SimpleAnnotation3(firstName = "Perica", parents = { "Ivica", "Marica" }, age = 16)
 	void methodThree() {
 
 	}

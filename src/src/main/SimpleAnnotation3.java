@@ -1,3 +1,4 @@
+package src.main;
 
 public @interface SimpleAnnotation3 {
 
@@ -8,5 +9,10 @@ public @interface SimpleAnnotation3 {
 	String lastName() default "NOOE"; // this is optional attribute, it can be left in annotation definition
 
 	String[] parents(); // this annotation is array
+
+	int age();
+
+	// SimpleAnnotation3(firstName = "name", parents = {"first", second}, age = 3);
+	// SimpleAnnotation3(firstName = "fname", lastName = "lname", parents = {"first", second}, age = 16);
 
 }
