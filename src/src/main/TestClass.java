@@ -38,4 +38,13 @@ public class TestClass {
 
 	}
 
+	// since Family has only one parameter and it is named value it can be omitted
+	@Family({ @Relative(relation = "dad", person = @Person(firstName = "ivo", lastName = "ivic", age = 34)),
+			@Relative(relation = "mam", person = @Person(firstName = "ana", lastName = "ivic", age = 36)),
+			@Relative(relation = "sis", person = @Person(firstName = "kata", lastName = "ivic", age = 8)),
+			@Relative(relation = "me", person = @Person(firstName = "pero", lastName = "ivic", age = 10)) })
+	void myFamily() {
+
+	}
+
 }

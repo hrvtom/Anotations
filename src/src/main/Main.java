@@ -51,32 +51,49 @@ public class Main {
 		if (annotations.length == 0)
 			out.println("No Annotations");
 		for (Annotation annotation : annotations) {// Annotations of for each TestClass method
-			out.format("     %s%n", annotation.toString());
-			// Each Annotation is also a Class
-			Class aclass = annotation.annotationType(); // this is annotation's class
-			Method[] amethods = aclass.getDeclaredMethods(); // Annotation's parameters are actually Annotation's
-																// class
-																// methods
+			readSingleAnnotation(annotation);
+		}
 
-			out.println("     Default values");
-			for (Method amethod : amethods) { // get the value of each annotation parameter
-				out.format("           %s = %s%n", amethod.getName(), amethod.getDefaultValue());
-			}
-			out.println("     Actuall values"); // calling the method(parameter) will get us the parameter value
-			for (Method amethod : amethods) { // get the value of each annotation parameter
-				try {
-					Object value = amethod.invoke(annotation, (Object[]) null);
-					if (value instanceof Object[]) {
+	}
+
+	private static void readSingleAnnotation(Annotation annotation) {
+		out.format("     %s%n", annotation.toString());
+		// Each Annotation is also a Class
+		Class aclass = annotation.annotationType(); // this is annotation's class
+		Method[] amethods = aclass.getDeclaredMethods(); // Annotation's parameters are actually Annotation's
+															// class
+															// methods
+
+		out.println("     Default values");
+		for (Method amethod : amethods) { // get the value of each annotation parameter
+			out.format("           %s = %s%n", amethod.getName(), amethod.getDefaultValue());
+		}
+		out.println("     Actuall values"); // calling the method(parameter) will get us the parameter value
+		for (Method amethod : amethods) { // get the value of each annotation parameter
+			try {
+				Object value = amethod.invoke(annotation, (Object[]) null);
+				if (value instanceof Object[]) {
+					Object[] values = (Object[]) value;
+					Object singleValue = values[0];
+					if (!(singleValue instanceof Annotation)) { // value is promotive type or string
 						out.format("           %s = %s%n", amethod.getName(), Arrays.toString((Object[]) value));
+					} else {// value is another annotation
+						out.format("           %s = Annotation....%n", amethod.getName());
+						for (Object val : values) {
+							readSingleAnnotation((Annotation) val);
+						}
+					}
+				} else {
+					if (value instanceof Annotation) {
+						out.format("           %s = Annotation....%n", amethod.getName());
+						readSingleAnnotation((Annotation) value);
 					} else {
 						out.format("           %s = %s%n", amethod.getName(), value);
 					}
-				} catch (Exception e) {
-					out.format("Failed to get the value %s for the attribute %s%n", amethod.getName(),
-							aclass.getName());
 				}
+			} catch (Exception e) {
+				out.format("Failed to get the value %s for the attribute %s%n", amethod.getName(), aclass.getName());
 			}
-
 		}
 
 	}
